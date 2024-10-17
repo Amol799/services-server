@@ -1,10 +1,12 @@
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
-const twilio = require('twilio');
+//const twilio //= require('twilio');
 const Razorpay = require('razorpay')
 
-const client = twilio(accountSid, authToken);
+const nodemailer = require("nodemailer")
+
+//const client = twilio(accountSid, authToken);
 
 const sendMessage = async(req,res)=>{
     
@@ -32,14 +34,14 @@ const sendMessage = async(req,res)=>{
 
 const login = (req, res) => {
     try{
-        console.log('body: ' + req.body);
-        console.log('username: ' + req.body.username);
-        console.log('password:'+ req.body.password);
+        // console.log('body: ' + req.body);
+        // console.log('username: ' + req.body.username);
+        // console.log('password:'+ req.body.password);
     
         const { username, password } = req.body;
         if (username === '7396609490' && password === '1234') {
             const token = generateToken(username);
-            console.log('Tokeen token generated : ' + token);
+           // console.log('Tokeen token generated : ' + token);
             res.status(200).json({ token });
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
@@ -78,8 +80,57 @@ function generateToken(username) {
     const token = jwt.sign({ username }, 'your_secret_key', { expiresIn: '1h' });
     return token;
 }
+
+const snedEmail = async(req, res, next) => {
+
+    try{
+        console.log(`The mail has beed send 😃 and the id is ${info.messageId}`);
+
+        let transporter = nodemailer.createTransport({   
+            service:"gmail", 
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            logger:true,
+            debug:true,
+            secureConnection: false,
+            auth: {
+              user: process.env.EMAIL_ADDRESS,
+              pass: process.env.TEXT
+            },
+            tls:{
+              rejectUnauthorized :true
+            }
+          });
+        
+          let mailOptions = {
+            from: 'This is from Akshaj Cold Press Oil', // sender address
+            to: req.body.email, // list of receivers
+            subject: "subject : " + req.body.subject,// Subject line
+            html: `<h4>Hi ${req.body.name}</h4><br>
+            <h4>Email :  ${req.body.email}</h4><br>
+        
+            <h4>${req.body.body}</h4>
+            <h4>Thanks for joining us</h4>`
+          };
+        
+          // send mail with defined transport object
+          let info = await transporter.sendMail(mailOptions);
+          console.log('Email sent: %s', info.messageId);
+          console.log('Email status sent: %s', info.status);
+          return res.status(200).json({ success: true,msg:'Email  sent successfully' });
+    }
+    catch(err){
+        console.error(err);
+        return res.status(500).json({ success: false, msg: 'Error sending email' });
+    }
+    
+    
+}
+
 module.exports = {
     sendMessage,
     login,
-    createPayment
+    createPayment,
+    snedEmail
 }
+
