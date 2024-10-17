@@ -6,6 +6,7 @@ const Razorpay = require('razorpay')
 
 const nodemailer = require("nodemailer")
 
+const sqlite3 = require('sqlite3').verbose();
 //const client = twilio(accountSid, authToken);
 
 const sendMessage = async(req,res)=>{

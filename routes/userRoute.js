@@ -7,6 +7,9 @@ user_route.use(bodyParser.json());
 user_route.use(bodyParser.urlencoded({extended:true}));
 
 const userController = require('../controllers/userController');
+
+const userDBOController = require('../controllers/userDBOController');
+
 //send sms to user
 user_route.post('/api/send-message',userController.sendMessage);
 // login authentication
@@ -15,5 +18,12 @@ user_route.post('/api/login',userController.login);
 user_route.post('/api/payment',userController.createPayment);
 //send Email notification
 user_route.post('/api/sendemail',userController.snedEmail);
+
+// user db oprations
+
+user_route.get('/api/get-users', userDBOController.getAllUsers);
+user_route.post('/api/add-user', userDBOController.insertUser);
+user_route.put('/api/update-user', userDBOController.updateUser);
+user_route.delete('/api/delete-user', userDBOController.deleteUser);
 
 module.exports = user_route;
