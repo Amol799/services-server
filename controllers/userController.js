@@ -84,9 +84,13 @@ function generateToken(username) {
 const snedEmail = async(req, res, next) => {
 
     try{
-        console.log(`The mail has beed send 😃 and the id is ${info.messageId}`);
+        console.log(`The mail send function`);
+         console.log("email id is " + req.body.email);
+         console.log("subject is " + req.body.subject)
+         console.log("body is " + req.body.body);
+         console.log("name is " + req.body.name);
 
-        let transporter = nodemailer.createTransport({   
+            let transporter = nodemailer.createTransport({   
             service:"gmail", 
             port: 465,
             secure: true, // true for 465, false for other ports
@@ -123,8 +127,6 @@ const snedEmail = async(req, res, next) => {
         console.error(err);
         return res.status(500).json({ success: false, msg: 'Error sending email' });
     }
-    
-    
 }
 
 module.exports = {
