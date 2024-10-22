@@ -25,5 +25,5 @@ user_route.get('/api/get-users', userDBOController.getAllUsers);
 user_route.post('/api/add-user', userDBOController.insertUser);
 user_route.put('/api/update-user', userDBOController.updateUser);
 user_route.delete('/api/delete-user', userDBOController.deleteUser);
-
+user_route.put('/api/get-usersbyid', userDBOController.getUsersById);
 module.exports = user_route;

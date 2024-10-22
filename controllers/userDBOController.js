@@ -77,8 +77,26 @@ const deleteUser = (req, res) => {
 }
 const getAllUsers = (req, res) => {
   try{
+    
     console.log('Fetching all users');
     db.all(`SELECT * FROM users`, [], (err, rows) => {
+      if (err) {        
+        res.status(401).json({ error: err.message });       
+      } else {
+        res.status(200).json({rows});        
+      }
+      console.log("result: " + JSON.stringify({rows}));
+    });
+  }
+  catch(error){
+      return res.status(400).json({ success: false, msg: error.message });
+  }
+}
+const getUsersById = (req, res) => {
+  try{
+    const { name, email, password, mobile, address } = req.body;
+    console.log('Fetching users by id and mobile is');
+    db.all(`SELECT * FROM users WHERE mobile = ?`, [mobile], (err, rows) => {
       if (err) {        
         res.status(401).json({ error: err.message });       
       } else {
@@ -108,5 +126,6 @@ module.exports = {
   insertUser,
   updateUser,
   deleteUser,
-  getAllUsers
+  getAllUsers,
+  getUsersById  
 };
