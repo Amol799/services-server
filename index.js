@@ -16,6 +16,11 @@ app.listen(3000,function(){
     console.log("Server is running");
 });
 
+app.get("/", (req, res) => {
+  res.send(
+    "<h1 style='text-align: center'>Wellcome to akshaj oil </h1>"
+  );
+});
 // const express = require('express');
 // const app = express();
 
